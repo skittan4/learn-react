@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="utf-8" />
+  <title>04 Perfect effects | FAC React</title>
+
+  <body>
+    <!-- These scripts will make React and ReactDOM globally available. -->
+    <script src="./../assets/react@16.9.0/umd/react.development.js"></script>
+    <script src="./../assets/react-dom@16.9.0/umd/react-dom.development.js"></script>
+    <!-- This will let us write JSX and ES6 in a script tag with a special type of "text/babel" -->
+    <script src="./../assets/babel-standalone@7.6.0/babel.js"></script>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const root = document.getElementById("root");
+
+      function Toggle(props) {
+        const [open, setOpen] = React.useState(false);
+        const toggleOpen = () => setOpen(!open);
+
+        React.useEffect(() => {
+          document.title = open?"on":"off" ;
+           }, [open]);
+
+        return (
+          <div>
+            <button onClick={toggleOpen}>Toggle</button>
+            {open ? <div>{props.children}</div> : null}
+          </div>
+        );
+      }
+
+function MousePosition(props) {
+
+  const [x, setx] = React.useState(0);
+  const [y, sety] = React.useState(0);
+
+
+  React.useEffect(() => {
+    const handleMouseMove = (event) => {
+      
+      setx(event.x);
+      sety(event.y);
+    };
+    window.addEventListener("mousemove", handleMoseMove);
+
+ 
+
+
+    const cleanup = () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    }
+    return cleanup;
+  }, []);
+
+
+
+  return (
+    <div>
+      {x} , {y}
+
+    </div>
+  );
+
+
+}
+
+      function App() {
+        return <Toggle>
+          <MousePosition/>
+          </Toggle>;
+      }
+
+      ReactDOM.render(<App />, root);
+    </script>
+  </body>
+</html>
